@@ -1,11 +1,32 @@
 import React, { useContext } from 'react';
+import InputContext from '../context/InputContext';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
   const { planets } = useContext(PlanetsContext);
+  const { searchInput } = useContext(InputContext);
 
-  const planetsHeaders = Object.keys(planets[0])
-    .filter((header) => header !== 'residents');
+  // const planetsHeaders = planets && Object.keys(planets[0])
+  //   .filter((header) => header !== 'residents');
+  // console.log('PLANETS:', planets);
+
+  const filterSearchInput = planets.filter((planet) => planet.name
+    .toLowerCase().includes(searchInput.toLowerCase()));
+  console.log('FILTERED:', filterSearchInput);
+
+  const headers = ['name',
+    'rotation period',
+    'orbital period',
+    'diameter',
+    'climate',
+    'gravity',
+    'terrain',
+    'surface water',
+    'population',
+    'films',
+    'created',
+    'edited',
+    'url'];
 
   // console.log('PLANET HEADERS', planetsHeaders);
 
@@ -17,7 +38,7 @@ function Table() {
       <table className="table">
         <thead>
           <tr>
-            {planetsHeaders.map((header) => (
+            {headers.map((header) => (
               <th key={ header }>
                 { header }
               </th>
@@ -26,7 +47,7 @@ function Table() {
         </thead>
         <tbody>
           {
-            planets.map((planet) => (
+            filterSearchInput.map((planet) => (
               <tr key={ planet.name }>
                 <td>{planet.name}</td>
                 <td>{planet.rotation_period}</td>

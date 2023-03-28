@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import Filters from '../components/Filters';
 import Table from '../components/Table';
 import PlanetsContext from '../context/PlanetsContext';
 
@@ -21,6 +22,7 @@ function Home() {
   return (
     <>
       <h1>HOME</h1>
+      <Filters />
       {loading
         ? <h2>LOADING...</h2>
         : <Table />}
