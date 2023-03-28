@@ -4,6 +4,11 @@ import PlanetsContext from '../context/PlanetsContext';
 function Table() {
   const { planets } = useContext(PlanetsContext);
 
+  const planetsHeaders = Object.keys(planets[0])
+    .filter((header) => header !== 'residents');
+
+  // console.log('PLANET HEADERS', planetsHeaders);
+
   return (
     <>
       {/* {planets.map((planet) => (
@@ -12,13 +17,10 @@ function Table() {
       <table className="table">
         <thead>
           <tr>
-            {Object.keys(planets[0]).map((header) => (
-              header !== 'residents'
-              && (
-                <th key={ header }>
-                  { header }
-                </th>
-              )
+            {planetsHeaders.map((header) => (
+              <th key={ header }>
+                { header }
+              </th>
             ))}
           </tr>
         </thead>
