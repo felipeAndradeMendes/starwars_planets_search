@@ -49,3 +49,29 @@ export const comparisonFilterOptions = [
 // } else {
 //   compSign = '\u003D\u003D\u003D';
 // }
+
+// const resetCombinedFilters = () => {
+//   // const res = filterByNumericValues.map((option) => {
+//   //   const newObj = {
+//   //     column: option.column,
+//   //     comparison: option.comparison,
+//   //     value: option.value,
+//   //   };
+//   //   return newObj;
+//   // });
+//   // console.log('***TESTE***:', res);
+//   const result = filterByNumericValues.map((item) => planets.filter((planet) => {
+//     if (item.comparison === 'maior que') {
+//       return !planet[item.column] > Number(item.value);
+//     } if (item.comparison === 'menor que') {
+//       return !planet[item.column] < Number(item.value);
+//     } if (item.comparison === 'igual a') {
+//       return !planet[item.column] === item.value;
+//     }
+//     return planets;
+//   }));
+//   console.log('***TESTE***', result);
+//   // setCombinedFilters(result);
+
+//   // const res = planets.filter
+// };
