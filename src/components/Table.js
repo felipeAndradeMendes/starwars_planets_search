@@ -11,7 +11,18 @@ function Table() {
 
   const filterSearchInput = planets.filter((planet) => planet.name
     .toLowerCase().includes(searchInput.toLowerCase()));
-  console.log('FILTERED:', filterSearchInput);
+  console.log('FILTERED BY NAME:', filterSearchInput);
+
+  const planetsToRender = () => {
+    if (combinedFilters.length === 0) {
+      if (searchInput === '') { return planets; }
+      if (searchInput !== '') { return filterSearchInput; }
+    } else {
+      return combinedFilters;
+    }
+  };
+
+  console.log('PLANETS TO RENDER', planetsToRender());
 
   return (
     <table className="table">
@@ -26,7 +37,7 @@ function Table() {
       </thead>
       <tbody>
         {
-          filterSearchInput.map((planet) => (
+          planetsToRender().map((planet) => (
             <tr key={ planet.name }>
               <td>{planet.name}</td>
               <td>{planet.rotation_period}</td>

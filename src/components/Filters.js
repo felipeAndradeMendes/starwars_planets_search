@@ -13,30 +13,30 @@ function Filters() {
     valueFilter,
     setValueFilter,
     setCombinedFilters,
+    combinedFilters,
   } = useContext(InputContext);
 
   const { planets } = useContext(PlanetsContext);
 
-  console.log('COLUMN FILTER:', columnFilter);
-  console.log('COMPARISON FILTER:', comparisonFilter);
+  // console.log('COLUMN FILTER:', columnFilter);
+  // console.log('COMPARISON FILTER:', comparisonFilter);
   // console.log(valueFilter);
 
-  const filterCombinedSelectors = (column, comparison, value) => {
-    // filterColumn = planets.filter((planet) => planet[column]);
-    const filterComp = planets.filter((planet) => {
-      if (comparison === 'maior que') {
-        return planet[column] > value;
-      } if (comparison === 'menor que') {
-        return planet[column] < value;
+  const filterCombinedSelectors = () => {
+    const arrayToMap = combinedFilters.length === 0 ? planets : combinedFilters;
+    const filterComp = arrayToMap.filter((planet) => {
+      if (comparisonFilter === 'maior que') {
+        return planet[columnFilter] > Number(valueFilter);
+      } if (comparisonFilter === 'menor que') {
+        return planet[columnFilter] < Number(valueFilter);
+      } if (comparisonFilter === 'igual a') {
+        return planet[columnFilter] === valueFilter;
       }
-      return planet[column] === value;
+      return arrayToMap;
     });
+    console.log('FILTER COMP:', filterComp);
     setCombinedFilters(filterComp);
   };
-
-  // FIZ UM CONSOLE NA TABLE E PERCEBI QUE NAO ESTA FILTRANDO
-  // ATENÇÃO AO DADOS QUE RETORNAM UNKNOWN
-  // DE RESTO ESTÁ TUDO FUNCIONANDO
 
   return (
     <>
