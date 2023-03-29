@@ -9,6 +9,7 @@ function InputProvider({ children }) {
   const [valueFilter, setValueFilter] = useState(0);
   const [combinedFilters, setCombinedFilters] = useState([]);
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  // const [columnsToRender, setColumnsToRender] = useState([]);
 
   const context = {
     searchInput,
@@ -23,6 +24,8 @@ function InputProvider({ children }) {
     setCombinedFilters,
     filterByNumericValues,
     setFilterByNumericValues,
+    // columnsToRender,
+    // setColumnsToRender,
   };
 
   return (

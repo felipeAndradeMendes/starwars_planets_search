@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import InputContext from '../context/InputContext';
 import PlanetsContext from '../context/PlanetsContext';
 import { columnOptions, comparisonFilterOptions } from '../helpers/helpers';
@@ -21,17 +21,28 @@ function Filters() {
   const { planets } = useContext(PlanetsContext);
 
   /* Retorna opções de coluna não utilizadas */
-  const columnsToRender = () => {
+  const columnsToBeRender = () => {
     // Retorna coluna usadas a partir dos objetos armazenados em filterByNumericValues;
     const columnsUsed = filterByNumericValues.map((filter) => filter.column);
     console.log('COLUMN OPTIONS:', columnOptions);
     console.log('COLUMNS USED:', columnsUsed);
     // Filtra colunas que não foram usadas para serem renderizadas nas options;
-    const colmunsToBeRendered = columnOptions.filter(
+    const columnsToBeRendered = columnOptions.filter(
       (column) => !columnsUsed.includes(column),
     );
-    console.log('COLUMNS TO BE RENDERED:', colmunsToBeRendered);
-    return colmunsToBeRendered;
+    console.log('COLUMNS TO BE RENDERED:', columnsToBeRendered);
+    return columnsToBeRendered;
+  };
+
+  const constroyAndSetCombinedFiltersObj = () => {
+    const combinedFiltersObj = {
+      column: columnFilter,
+      comparison: comparisonFilter,
+      value: valueFilter,
+    };
+    setFilterByNumericValues([...filterByNumericValues, combinedFiltersObj]);
+    console.log('COLUMNS TO RENDER 02', columnsToBeRender());
+    setColumnFilter(columnsToBeRender()[1]);
   };
 
   // função chamada pelo onclik FILTRAR
@@ -55,38 +66,66 @@ function Filters() {
     });
     /* Cria objeto com as opções escolhidas nos filtros comibnadas.
     Será usado para renderizar os filtros na tela a cada filtragem. */
-    const combinedFiltersObj = {
-      column: columnFilter,
-      comparison: comparisonFilter,
-      value: valueFilter,
-    };
+
+    // const combinedFiltersObj = {
+    //   column: columnFilter,
+    //   comparison: comparisonFilter,
+    //   value: valueFilter,
+    // };
+    constroyAndSetCombinedFiltersObj();
     // Seta combinedFilter com os array filtrado acima, que erá usado na Table.
     setCombinedFilters(filterComp);
+
     // Atualiza filterByNumericValues com o novo objeto de filtros combinados.
-    setFilterByNumericValues([...filterByNumericValues, combinedFiltersObj]);
+    // setFilterByNumericValues([...filterByNumericValues, combinedFiltersObj]);
+
     // Seta valor inicial da columnFilter para o prmeiro item do array de opções não usadas.
-    setColumnFilter(columnsToRender()[0]);
+    // setColumnFilter(columnsToRender()[0]);
   };
 
   const resetCombinedFilters = () => {
-    const res = filterByNumericValues.map((option) => {
-      const newObj = {
-        column: option.column,
-        comparison: option.comparison,
-        value: option.value,
-      };
-      return newObj;
-    });
-    console.log('***TESTE***:', res);
+    // const res = filterByNumericValues.map((option) => {
+    //   const newObj = {
+    //     column: option.column,
+    //     comparison: option.comparison,
+    //     value: option.value,
+    //   };
+    //   return newObj;
+    // });
+    // console.log('***TESTE***:', res);
+    const result = filterByNumericValues.map((item) => planets.filter((planet) => {
+      if (item.comparison === 'maior que') {
+        return planet[item.column] > Number(item.value);
+      } if (item.comparison === 'menor que') {
+        return planet[item.column] < Number(item.value);
+      } if (item.comparison === 'igual a') {
+        return planet[item.column] === item.value;
+      }
+      return planets;
+    }));
+    // setCombinedFilters(result);
+    console.log('***TESTE***', result);
+
+    // const res = planets.filter
   };
+
+  // PAREI TENTANDO RE RENDERIZAR A TABELA APÓS APAGAR FILTROS COMBINADOS.
+  // PENSANDO NA FUNÇÃO ACIMA PARA REPETIR LOGICA DA FUNÇÃO filterCombinedSelectors;
 
   const deleteSingleFilter = (value) => {
     const filteredArray = filterByNumericValues.filter((item) => item.column !== value);
     setFilterByNumericValues(filteredArray);
-    resetCombinedFilters();
+    // resetCombinedFilters();
 
     // console.log('FILTER BY NUMERICAL VALUES:', filterByNumericValues);
   };
+
+  useEffect(() => {
+    resetCombinedFilters();
+  }, [filterByNumericValues]);
+
+  console.log(' ');
+  console.log(' ');
 
   return (
     <>
@@ -112,7 +151,7 @@ function Filters() {
           value={ columnFilter }
           onChange={ (e) => setColumnFilter(e.target.value) }
         >
-          {columnsToRender().map((optionColumn) => (
+          {columnsToBeRender().map((optionColumn) => (
             <option
               key={ optionColumn }
               value={ optionColumn }
