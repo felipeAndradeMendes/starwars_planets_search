@@ -14,6 +14,8 @@ function Filters() {
     setValueFilter,
     setCombinedFilters,
     combinedFilters,
+    setFilterByNumericValues,
+    filterByNumericValues,
   } = useContext(InputContext);
 
   const { planets } = useContext(PlanetsContext);
@@ -22,6 +24,19 @@ function Filters() {
   // console.log('COMPARISON FILTER:', comparisonFilter);
   // console.log(valueFilter);
 
+  const columnsToRender = () => {
+    const columnsUsed = filterByNumericValues.map((filter) => filter.column);
+    console.log('COLUMN OPTIONS:', columnOptions);
+    console.log('COLUMNS USED:', columnsUsed);
+    const colmunsToBeRendered = columnOptions.filter(
+      (column) => !columnsUsed.includes(column),
+    );
+    console.log('COLUMNS TO BE RENDERED:', colmunsToBeRendered);
+    return colmunsToBeRendered;
+  };
+  // columnsToRender();
+
+  // função chamada pelo onclik FILTRAR
   const filterCombinedSelectors = () => {
     const arrayToMap = combinedFilters.length === 0 ? planets : combinedFilters;
     const filterComp = arrayToMap.filter((planet) => {
@@ -34,8 +49,15 @@ function Filters() {
       }
       return arrayToMap;
     });
-    console.log('FILTER COMP:', filterComp);
+    // console.log('FILTER COMP:', filterComp);
+    const combinedFiltersObj = {
+      column: columnFilter,
+      comparison: comparisonFilter,
+      value: valueFilter,
+    };
     setCombinedFilters(filterComp);
+    setFilterByNumericValues([...filterByNumericValues, combinedFiltersObj]);
+    setColumnFilter(columnsToRender()[0]);
   };
 
   return (
@@ -62,7 +84,7 @@ function Filters() {
           value={ columnFilter }
           onChange={ (e) => setColumnFilter(e.target.value) }
         >
-          {columnOptions.map((optionColumn) => (
+          {columnsToRender().map((optionColumn) => (
             <option
               key={ optionColumn }
               value={ optionColumn }
@@ -102,7 +124,7 @@ function Filters() {
           onChange={ (e) => setValueFilter(e.target.value) }
         />
       </label>
-
+      {/* {BUTTON} */}
       <input
         data-testid="button-filter"
         type="button"
@@ -110,7 +132,21 @@ function Filters() {
         value="FILTRAR"
         onClick={ () => filterCombinedSelectors() }
       />
-
+      {/* {COMBINED FILTERS} */}
+      <div>
+        {filterByNumericValues.map((filter) => (
+          <div key={ filter.column }>
+            <p>
+              {`${filter.column} ${filter.comparison} ${filter.value}`}
+            </p>
+            <input
+              type="button"
+              value="delete"
+              name="delete"
+            />
+          </div>
+        ))}
+      </div>
     </>
   );
 }

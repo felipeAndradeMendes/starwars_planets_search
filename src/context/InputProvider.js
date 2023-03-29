@@ -8,6 +8,7 @@ function InputProvider({ children }) {
   const [comparisonFilter, setComparisonFilter] = useState('maior que');
   const [valueFilter, setValueFilter] = useState(0);
   const [combinedFilters, setCombinedFilters] = useState([]);
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   const context = {
     searchInput,
@@ -20,6 +21,8 @@ function InputProvider({ children }) {
     setValueFilter,
     combinedFilters,
     setCombinedFilters,
+    filterByNumericValues,
+    setFilterByNumericValues,
   };
 
   return (
