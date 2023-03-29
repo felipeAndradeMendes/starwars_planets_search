@@ -9,10 +9,15 @@ function Table() {
 
   console.log('COMBINED FILTERS:', combinedFilters);
 
+  /* Filtra a tabela de planetas por nome.
+  Mapeia os planetas cujo termo de busca esta presente no nome. */
   const filterSearchInput = planets.filter((planet) => planet.name
     .toLowerCase().includes(searchInput.toLowerCase()));
   console.log('FILTERED BY NAME:', filterSearchInput);
 
+  /* Se os filtros combinados estiverem vazios: se o input por vazio retorna a lista
+  completa de planetas, se estiver com algum termo, retorna a constante acima;
+  Se os filtros combinados estiverem preenchidos, retorna esse array. */
   const planetsToRender = () => {
     if (combinedFilters.length === 0) {
       if (searchInput === '') { return planets; }
@@ -36,6 +41,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
+        {/* Usa retorno da função abaixo para renderizar a tabela */}
         {
           planetsToRender().map((planet) => (
             <tr key={ planet.name }>

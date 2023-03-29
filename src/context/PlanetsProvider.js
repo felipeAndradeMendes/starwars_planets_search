@@ -6,6 +6,7 @@ function PlanetsProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Chama a api para preencher a tabela, controlando o loading;
   useEffect(() => {
     const callApi = async () => {
       setLoading(true);

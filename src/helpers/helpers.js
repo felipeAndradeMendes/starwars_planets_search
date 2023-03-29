@@ -1,3 +1,4 @@
+// Opções do select do columnFilter
 export const columnOptions = [
   'population',
   'orbital_period',
@@ -6,6 +7,7 @@ export const columnOptions = [
   'surface_water',
 ];
 
+// Opções dos headers da tabela
 export const headers = ['name',
   'rotation_period',
   'orbital_period',
@@ -21,12 +23,14 @@ export const headers = ['name',
   'url',
 ];
 
+// Opções do select do comparisonFilter
 export const comparisonFilterOptions = [
   'maior que',
   'menor que',
   'igual a',
 ];
 
+// Tentativas abaixo com unicode:
 // console.log('\u003C'); // maior >
 // console.log('\u003E'); // menor <
 // console.log('\u003D\u003D\u003D'); // igual ===
