@@ -97,9 +97,9 @@ function Filters() {
     // console.log('FILTER BY NUMERICAL VALUES:', filterByNumericValues);
   };
 
-  // useEffect(() => {
-  //   resetCombinedFilters();
-  // }, [filterByNumericValues]);
+  const removeFilters = () => {
+    setFilterByNumericValues([]);
+  };
 
   console.log(' ');
   console.log(' ');
@@ -176,6 +176,13 @@ function Filters() {
         value="FILTRAR"
         onClick={ () => filterCombinedSelectors() }
       />
+      <button
+        data-testid="button-remove-filters"
+        type="button"
+        onClick={ () => removeFilters() }
+      >
+        Remover Filtros
+      </button>
       {/* {COMBINED FILTERS} */}
       <div>
         {filterByNumericValues.map((filter) => (
