@@ -85,7 +85,7 @@ describe('TESTES GERAIS', () => {
     expect(screen.queryByRole('cell', { name: /Dagobah/i})).not.toBeInTheDocument();
   });
 
-  test('Filtros combinados retornam planetas esperados na tabela', async () => {
+  test('Filtros combinados retornam planetas esperados na tabela, também quando apaga', async () => {
     jest.spyOn(global, 'fetch');
     global.fetch.mockResolvedValue({
       json: jest.fn().mockResolvedValue(testData),
@@ -120,12 +120,17 @@ describe('TESTES GERAIS', () => {
     userEvent.selectOptions(comparisonFilter, 'menor que');
     userEvent.clear(valueFilter);
     userEvent.type(valueFilter, '1000000');
-    userEvent.click(buttonFilter);
-
-    screen.logTestingPlaygroundURL();
-
+    userEvent.click(buttonFilter);    
     expect(tableRows.children.length).toBe(2);
 
+    userEvent.selectOptions(columnFilter, 'rotation_period');
+    userEvent.selectOptions(comparisonFilter, 'igual a');
+    userEvent.clear(valueFilter);
+    userEvent.type(valueFilter, '23');
+    userEvent.click(buttonFilter);
+    expect(tableRows.children.length).toBe(1);
+    
+    screen.logTestingPlaygroundURL();
   });
 
 });
