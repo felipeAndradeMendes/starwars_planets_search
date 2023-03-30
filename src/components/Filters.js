@@ -83,62 +83,68 @@ function Filters() {
     // setColumnFilter(columnsToRender()[0]);
   };
 
-  const resetCombinedFilters = () => {
-    // const res = filterByNumericValues.map((option) => {
-    //   const newObj = {
-    //     column: option.column,
-    //     comparison: option.comparison,
-    //     value: option.value,
-    //   };
-    //   return newObj;
-    // });
-    // console.log('***TESTE***:', res);
-    const result = filterByNumericValues.map((item) => planets.filter((planet) => {
-      if (item.comparison === 'maior que') {
-        return planet[item.column] < Number(item.value);
-      } if (item.comparison === 'menor que') {
-        return planet[item.column] > Number(item.value);
-      } if (item.comparison === 'igual a') {
-        return planet[item.column] !== item.value;
+  // LOGICA 01
+  // const resetCombinedFilters = () => {
+  //   // const res = filterByNumericValues.map((option) => {
+  //   //   const newObj = {
+  //   //     column: option.column,
+  //   //     comparison: option.comparison,
+  //   //     value: option.value,
+  //   //   };
+  //   //   return newObj;
+  //   // });
+  //   // console.log('***TESTE***:', res);
+  //   const result = filterByNumericValues.map((item) => planets.filter((planet) => {
+  //     if (item.comparison === 'maior que') {
+  //       return planet[item.column] < Number(item.value);
+  //     } if (item.comparison === 'menor que') {
+  //       return planet[item.column] > Number(item.value);
+  //     } if (item.comparison === 'igual a') {
+  //       return planet[item.column] !== item.value;
+  //     }
+  //     return planets;
+  //   }));
+  //   console.log('***TESTE***', result);
+  //   // setCombinedFilters(result);
+
+  //   // const res = planets.filter
+  // };
+
+  // LOGICA 02
+  const resetCombinedFilters = (filterToBeDeleted) => {
+    const { column, comparison, value } = filterToBeDeleted[0];
+    const filterComp = planets.filter((planet) => {
+      if (comparison === 'maior que') {
+        return planet[column] < Number(value);
+      } if (comparison === 'menor que') {
+        return planet[column] > Number(value);
+      } if (comparison === 'igual a') {
+        return planet[column] !== value;
       }
       return planets;
-    }));
-    console.log('***TESTE***', result);
-    // setCombinedFilters(result);
-
-    // const res = planets.filter
+    });
+    console.log('PLANETS FILTRADOS COM FILTRO DELETADO:', filterComp);
+    console.log('ARRAYS ESPALHADOS:', [...combinedFilters, ...filterComp]);
+    setCombinedFilters([...combinedFilters, ...filterComp]);
   };
 
-  /* Acabei o dia percebendo que esse map-filter acima está errado. Primeiro pq teria que retornar
-  novo estado a cada passada nos itens do array de filterByNUmericalvalues. Segundo a primeira passada
-  usa como paramentro o array planets e as passadas seguintes teria que usar o novo estado como paramentro,
-  para compor o array a ser renderizado na Table.
-  Tem que achar uma maneira que:
-  1- Filtra o array de referencia "planets" baseado no primeiro filtro combinado (do array filterByNumericValues);
-  2- Armazena num estado 'X' e renderiza na Table o que sobrou do filtro;
-  3- Se houver de um filtro, faz a segunda filtrada, agora no estado "X" usando os paramentros do segundo filtro
-  4- Armazena no estado "X" e renderiza na Table.
-  5- Repete se houver outro filtro.
-
-  Os passos acima são feitos num só clique de deletar um filtro.
-  Se deletar outro filtro, o processo inteiro se repete, começando do array planets.
-
-  Possiveis soluções:
-  - Fazer alguma condicional para a segunda passada mudar do array planets para o do estado "X".
-  - Consertar o modo de uso dess filter-map, pq acho que não está alcançando a finalidade.
-  OBS: Na função acima, invetid os sinais > < ===  nos ifs, para pegar o contrário do que os filtros trazem */
-
   const deleteSingleFilter = (value) => {
+    // Resgata obj do filtro deletado;
+    const filterToBeDeleted = filterByNumericValues
+      .filter((item) => item.column === value);
+
+    // Filtra novo array sem o filtro deletado e atualiza estado;
     const filteredArray = filterByNumericValues.filter((item) => item.column !== value);
     setFilterByNumericValues(filteredArray);
-    // resetCombinedFilters();
+    resetCombinedFilters(filterToBeDeleted);
 
+    console.log('VALUE:', filterToBeDeleted);
     // console.log('FILTER BY NUMERICAL VALUES:', filterByNumericValues);
   };
 
-  useEffect(() => {
-    resetCombinedFilters();
-  }, [filterByNumericValues]);
+  // useEffect(() => {
+  //   resetCombinedFilters();
+  // }, [filterByNumericValues]);
 
   console.log(' ');
   console.log(' ');
@@ -238,3 +244,22 @@ function Filters() {
 }
 
 export default Filters;
+
+/* Acabei o dia percebendo que esse map-filter acima está errado. Primeiro pq teria que retornar
+  novo estado a cada passada nos itens do array de filterByNUmericalvalues. Segundo a primeira passada
+  usa como paramentro o array planets e as passadas seguintes teria que usar o novo estado como paramentro,
+  para compor o array a ser renderizado na Table.
+  Tem que achar uma maneira que:
+  1- Filtra o array de referencia "planets" baseado no primeiro filtro combinado (do array filterByNumericValues);
+  2- Armazena num estado 'X' e renderiza na Table o que sobrou do filtro;
+  3- Se houver de um filtro, faz a segunda filtrada, agora no estado "X" usando os paramentros do segundo filtro
+  4- Armazena no estado "X" e renderiza na Table.
+  5- Repete se houver outro filtro.
+
+  Os passos acima são feitos num só clique de deletar um filtro.
+  Se deletar outro filtro, o processo inteiro se repete, começando do array planets.
+
+  Possiveis soluções:
+  - Fazer alguma condicional para a segunda passada mudar do array planets para o do estado "X".
+  - Consertar o modo de uso dess filter-map, pq acho que não está alcançando a finalidade.
+  OBS: Na função acima, invetid os sinais > < ===  nos ifs, para pegar o contrário do que os filtros trazem */
