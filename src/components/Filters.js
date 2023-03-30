@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import InputContext from '../context/InputContext';
 import PlanetsContext from '../context/PlanetsContext';
 import { columnOptions, comparisonFilterOptions } from '../helpers/helpers';
@@ -83,51 +83,6 @@ function Filters() {
     // setColumnFilter(columnsToRender()[0]);
   };
 
-  // LOGICA 01
-  // const resetCombinedFilters = () => {
-  //   // const res = filterByNumericValues.map((option) => {
-  //   //   const newObj = {
-  //   //     column: option.column,
-  //   //     comparison: option.comparison,
-  //   //     value: option.value,
-  //   //   };
-  //   //   return newObj;
-  //   // });
-  //   // console.log('***TESTE***:', res);
-  //   const result = filterByNumericValues.map((item) => planets.filter((planet) => {
-  //     if (item.comparison === 'maior que') {
-  //       return planet[item.column] < Number(item.value);
-  //     } if (item.comparison === 'menor que') {
-  //       return planet[item.column] > Number(item.value);
-  //     } if (item.comparison === 'igual a') {
-  //       return planet[item.column] !== item.value;
-  //     }
-  //     return planets;
-  //   }));
-  //   console.log('***TESTE***', result);
-  //   // setCombinedFilters(result);
-
-  //   // const res = planets.filter
-  // };
-
-  // LOGICA 02
-  const resetCombinedFilters = (filterToBeDeleted) => {
-    const { column, comparison, value } = filterToBeDeleted[0];
-    const filterComp = planets.filter((planet) => {
-      if (comparison === 'maior que') {
-        return planet[column] < Number(value);
-      } if (comparison === 'menor que') {
-        return planet[column] > Number(value);
-      } if (comparison === 'igual a') {
-        return planet[column] !== value;
-      }
-      return planets;
-    });
-    console.log('PLANETS FILTRADOS COM FILTRO DELETADO:', filterComp);
-    console.log('ARRAYS ESPALHADOS:', [...combinedFilters, ...filterComp]);
-    setCombinedFilters([...combinedFilters, ...filterComp]);
-  };
-
   const deleteSingleFilter = (value) => {
     // Resgata obj do filtro deletado;
     const filterToBeDeleted = filterByNumericValues
@@ -136,7 +91,7 @@ function Filters() {
     // Filtra novo array sem o filtro deletado e atualiza estado;
     const filteredArray = filterByNumericValues.filter((item) => item.column !== value);
     setFilterByNumericValues(filteredArray);
-    resetCombinedFilters(filterToBeDeleted);
+    // resetCombinedFilters(filterToBeDeleted);
 
     console.log('VALUE:', filterToBeDeleted);
     // console.log('FILTER BY NUMERICAL VALUES:', filterByNumericValues);

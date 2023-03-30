@@ -75,3 +75,48 @@ export const comparisonFilterOptions = [
 
 //   // const res = planets.filter
 // };
+
+// LOGICA 01
+// const resetCombinedFilters = () => {
+//   // const res = filterByNumericValues.map((option) => {
+//   //   const newObj = {
+//   //     column: option.column,
+//   //     comparison: option.comparison,
+//   //     value: option.value,
+//   //   };
+//   //   return newObj;
+//   // });
+//   // console.log('***TESTE***:', res);
+//   const result = filterByNumericValues.map((item) => planets.filter((planet) => {
+//     if (item.comparison === 'maior que') {
+//       return planet[item.column] < Number(item.value);
+//     } if (item.comparison === 'menor que') {
+//       return planet[item.column] > Number(item.value);
+//     } if (item.comparison === 'igual a') {
+//       return planet[item.column] !== item.value;
+//     }
+//     return planets;
+//   }));
+//   console.log('***TESTE***', result);
+//   // setCombinedFilters(result);
+
+//   // const res = planets.filter
+// };
+
+// LOGICA 02
+// const resetCombinedFilters = (filterToBeDeleted) => {
+//   const { column, comparison, value } = filterToBeDeleted[0];
+//   const filterComp = planets.filter((planet) => {
+//     if (comparison === 'maior que') {
+//       return planet[column] < Number(value);
+//     } if (comparison === 'menor que') {
+//       return planet[column] > Number(value);
+//     } if (comparison === 'igual a') {
+//       return planet[column] !== value;
+//     }
+//     return planets;
+//   });
+// console.log('PLANETS FILTRADOS COM FILTRO DELETADO:', filterComp);
+// console.log('ARRAYS ESPALHADOS:', [...combinedFilters, ...filterComp]);
+// setCombinedFilters([...combinedFilters, ...filterComp]);
+// };
