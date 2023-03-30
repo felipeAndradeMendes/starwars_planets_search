@@ -42,11 +42,11 @@ function Table() {
         case 'menor que':
           match = match && value < Number(filter.value);
           break;
-        case 'igual a':
+        default:
           match = match && value === Number(filter.value);
           break;
-        default:
-          break;
+        // default:
+        //   break;
         }
       });
       return match;

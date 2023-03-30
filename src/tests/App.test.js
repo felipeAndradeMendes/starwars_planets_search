@@ -130,7 +130,46 @@ describe('TESTES GERAIS', () => {
     userEvent.click(buttonFilter);
     expect(tableRows.children.length).toBe(1);
     
+    const buttonRemoverFiltros = screen.getByRole('button', { name: /remover filtros/i});
+    expect(buttonRemoverFiltros).toBeInTheDocument();
+    userEvent.click(buttonRemoverFiltros);
+    expect(tableRows.children.length).toBe(10);
     screen.logTestingPlaygroundURL();
+  });
+
+  test('Remove um filtro especifico e volta a renderização inicial', async () => {
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(testData),
+    });
+    render(
+      <InputProvider>
+        <PlanetsProvider>
+          <App />
+        </PlanetsProvider>
+      ,
+      </InputProvider>,
+    )
+    const columnFilter = screen.getByTestId('column-filter')
+    const comparisonFilter = screen.getByTestId('comparison-filter');
+    const valueFilter = screen.getByTestId('value-filter');
+    const buttonFilter = screen.getByRole('button', { name: /filtrar/i });
+    const tableRows = await screen.findByTestId('table-testid');
+
+
+    userEvent.selectOptions(columnFilter, 'orbital_period');
+    userEvent.selectOptions(comparisonFilter, 'igual a');
+    userEvent.clear(valueFilter);
+    userEvent.type(valueFilter, '304');
+    userEvent.click(buttonFilter);
+    expect(tableRows.children.length).toBe(1);
+
+    const buttonDeleteFilter = await screen.findByRole("button", { name: /delete/i });
+    expect(buttonDeleteFilter).toBeInTheDocument();
+    userEvent.click(buttonDeleteFilter);
+    expect(tableRows.children.length).toBe(10);
+
+
   });
 
 });

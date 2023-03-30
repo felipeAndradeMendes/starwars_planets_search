@@ -53,17 +53,19 @@ function Filters() {
     Se combined filter não estiver preenchido, filtra a partir dos planetas originais,
     mas sob as condições dos filtros cominados iniciais "population maior que 0".
     Poderia deixar sem esse map dos planetas aoriginais, mas não atrapalhou, eu acho */
-    const arrayToMap = combinedFilters.length === 0 ? planets : combinedFilters;
-    const filterComp = arrayToMap.filter((planet) => {
-      if (comparisonFilter === 'maior que') {
-        return planet[columnFilter] > Number(valueFilter);
-      } if (comparisonFilter === 'menor que') {
-        return planet[columnFilter] < Number(valueFilter);
-      } if (comparisonFilter === 'igual a') {
-        return planet[columnFilter] === valueFilter;
-      }
-      return arrayToMap;
-    });
+
+    // const arrayToMap = combinedFilters.length === 0 ? planets : combinedFilters;
+    // const filterComp = arrayToMap.filter((planet) => {
+    //   if (comparisonFilter === 'maior que') {
+    //     return planet[columnFilter] > Number(valueFilter);
+    //   } if (comparisonFilter === 'menor que') {
+    //     return planet[columnFilter] < Number(valueFilter);
+    //   } if (comparisonFilter === 'igual a') {
+    //     return planet[columnFilter] === valueFilter;
+    //   }
+    //   return arrayToMap;
+    // });
+
     /* Cria objeto com as opções escolhidas nos filtros comibnadas.
     Será usado para renderizar os filtros na tela a cada filtragem. */
 
@@ -74,7 +76,7 @@ function Filters() {
     // };
     constroyAndSetCombinedFiltersObj();
     // Seta combinedFilter com os array filtrado acima, que erá usado na Table.
-    setCombinedFilters(filterComp);
+    // setCombinedFilters(filterComp);
 
     // Atualiza filterByNumericValues com o novo objeto de filtros combinados.
     // setFilterByNumericValues([...filterByNumericValues, combinedFiltersObj]);
