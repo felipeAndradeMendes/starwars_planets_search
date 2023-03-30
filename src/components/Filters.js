@@ -245,6 +245,10 @@ function Filters() {
 
 export default Filters;
 
+/* Para renderizar a tabela de acordo com os filtros, fazer diretamente no array planets.
+Assim, a tabela sempre será renderizada a partir dos filtros, independente de tudo. Se houver
+filtro, renderiza baseado nele, se não houver, renderiza normal. Aplicar esse filtro no momento da renderização. */
+
 /* Acabei o dia percebendo que esse map-filter acima está errado. Primeiro pq teria que retornar
   novo estado a cada passada nos itens do array de filterByNUmericalvalues. Segundo a primeira passada
   usa como paramentro o array planets e as passadas seguintes teria que usar o novo estado como paramentro,

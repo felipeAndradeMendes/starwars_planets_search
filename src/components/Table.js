@@ -40,7 +40,7 @@ function Table() {
           ))}
         </tr>
       </thead>
-      <tbody>
+      <tbody data-testid="table-testid">
         {/* Usa retorno da função abaixo para renderizar a tabela */}
         {
           planetsToRender().map((planet) => (
