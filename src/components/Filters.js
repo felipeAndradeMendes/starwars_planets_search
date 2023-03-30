@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import InputContext from '../context/InputContext';
-import PlanetsContext from '../context/PlanetsContext';
+// import PlanetsContext from '../context/PlanetsContext';
 import { columnOptions, comparisonFilterOptions } from '../helpers/helpers';
 
 function Filters() {
@@ -12,13 +12,11 @@ function Filters() {
     setComparisonFilter,
     valueFilter,
     setValueFilter,
-    setCombinedFilters,
-    combinedFilters,
     setFilterByNumericValues,
     filterByNumericValues,
   } = useContext(InputContext);
 
-  const { planets } = useContext(PlanetsContext);
+  // const { planets } = useContext(PlanetsContext);
 
   /* Retorna opções de coluna não utilizadas */
   const columnsToBeRender = () => {
