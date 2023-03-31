@@ -120,3 +120,26 @@ export const comparisonFilterOptions = [
 // console.log('ARRAYS ESPALHADOS:', [...combinedFilters, ...filterComp]);
 // setCombinedFilters([...combinedFilters, ...filterComp]);
 // };
+
+/* Se combinedFilters já tiver algum valor, faz novo filtro a partir desse array.
+    Se combined filter não estiver preenchido, filtra a partir dos planetas originais,
+    mas sob as condições dos filtros cominados iniciais "population maior que 0".
+    Poderia deixar sem esse map dos planetas aoriginais, mas não atrapalhou, eu acho */
+
+// const arrayToMap = combinedFilters.length === 0 ? planets : combinedFilters;
+// const filterComp = arrayToMap.filter((planet) => {
+//   if (comparisonFilter === 'maior que') {
+//     return planet[columnFilter] > Number(valueFilter);
+//   } if (comparisonFilter === 'menor que') {
+//     return planet[columnFilter] < Number(valueFilter);
+//   } if (comparisonFilter === 'igual a') {
+//     return planet[columnFilter] === valueFilter;
+//   }
+//   return arrayToMap;
+// });
+
+// const combinedFiltersObj = {
+//   column: columnFilter,
+//   comparison: comparisonFilter,
+//   value: valueFilter,
+// };

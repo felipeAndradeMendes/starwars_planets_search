@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import InputContext from '../context/InputContext';
-// import PlanetsContext from '../context/PlanetsContext';
+import PlanetsContext from '../context/PlanetsContext';
 import { columnOptions, comparisonFilterOptions } from '../helpers/helpers';
 
 function Filters() {
@@ -14,9 +14,13 @@ function Filters() {
     setValueFilter,
     setFilterByNumericValues,
     filterByNumericValues,
+    // sortedPlanetsToRender,
+    setSortedPlanetsToRender,
+    sortOrder,
+    setSortOrder,
   } = useContext(InputContext);
 
-  // const { planets } = useContext(PlanetsContext);
+  const { planets } = useContext(PlanetsContext);
 
   /* Retorna opções de coluna não utilizadas */
   const columnsToBeRender = () => {
@@ -31,7 +35,8 @@ function Filters() {
     console.log('COLUMNS TO BE RENDERED:', columnsToBeRendered);
     return columnsToBeRendered;
   };
-
+  /* Cria objeto com as opções escolhidas nos filtros comibnadas.
+    Será usado para renderizar os filtros na tela a cada filtragem. */
   const constroyAndSetCombinedFiltersObj = () => {
     const combinedFiltersObj = {
       column: columnFilter,
@@ -47,40 +52,7 @@ function Filters() {
   /* Botão filtrar chama a função, após options escolhidos.
   Mapeia os planetas de acordo com as escolhas de busca */
   const filterCombinedSelectors = () => {
-    /* Se combinedFilters já tiver algum valor, faz novo filtro a partir desse array.
-    Se combined filter não estiver preenchido, filtra a partir dos planetas originais,
-    mas sob as condições dos filtros cominados iniciais "population maior que 0".
-    Poderia deixar sem esse map dos planetas aoriginais, mas não atrapalhou, eu acho */
-
-    // const arrayToMap = combinedFilters.length === 0 ? planets : combinedFilters;
-    // const filterComp = arrayToMap.filter((planet) => {
-    //   if (comparisonFilter === 'maior que') {
-    //     return planet[columnFilter] > Number(valueFilter);
-    //   } if (comparisonFilter === 'menor que') {
-    //     return planet[columnFilter] < Number(valueFilter);
-    //   } if (comparisonFilter === 'igual a') {
-    //     return planet[columnFilter] === valueFilter;
-    //   }
-    //   return arrayToMap;
-    // });
-
-    /* Cria objeto com as opções escolhidas nos filtros comibnadas.
-    Será usado para renderizar os filtros na tela a cada filtragem. */
-
-    // const combinedFiltersObj = {
-    //   column: columnFilter,
-    //   comparison: comparisonFilter,
-    //   value: valueFilter,
-    // };
     constroyAndSetCombinedFiltersObj();
-    // Seta combinedFilter com os array filtrado acima, que erá usado na Table.
-    // setCombinedFilters(filterComp);
-
-    // Atualiza filterByNumericValues com o novo objeto de filtros combinados.
-    // setFilterByNumericValues([...filterByNumericValues, combinedFiltersObj]);
-
-    // Seta valor inicial da columnFilter para o prmeiro item do array de opções não usadas.
-    // setColumnFilter(columnsToRender()[0]);
   };
 
   const deleteSingleFilter = (value) => {
@@ -99,6 +71,24 @@ function Filters() {
 
   const removeFilters = () => {
     setFilterByNumericValues([]);
+  };
+
+  const sortPlanets = () => {
+    const planetsWithoutUnknown = planets
+      .filter((planet) => planet[sortOrder.column] !== 'unknown');
+
+    const planetsUnknown = planets
+      .filter((planet) => planet[sortOrder.column] === 'unknown');
+
+    if (sortOrder.sort === 'ASC') {
+      setSortedPlanetsToRender([...planetsWithoutUnknown
+        .sort((a, b) => a[sortOrder.column] - b[sortOrder.column]), ...planetsUnknown]);
+    }
+
+    if (sortOrder.sort === 'DESC') {
+      setSortedPlanetsToRender([...planetsWithoutUnknown
+        .sort((a, b) => b[sortOrder.column] - a[sortOrder.column]), ...planetsUnknown]);
+    }
   };
 
   console.log(' ');
@@ -201,31 +191,60 @@ function Filters() {
           </div>
         ))}
       </div>
+      {/* {SORT FILTERS} */}
+      <label htmlFor="columnSort">
+        {' '}
+        Ordenar
+        {' '}
+        <select
+          data-testid="column-sort"
+          name="columnSort"
+          id="columnSort"
+          value={ sortOrder.column }
+          onChange={ (e) => setSortOrder({ ...sortOrder, column: e.target.value }) }
+        >
+          {columnOptions.map((optionColumn) => (
+            <option
+              key={ optionColumn }
+              value={ optionColumn }
+            >
+              { optionColumn }
+            </option>
+          ))}
+        </select>
+      </label>
+      <label htmlFor="sortRadioAsc">
+        Ascendente
+        <input
+          id="sortRadioAsc"
+          data-testid="column-sort-input-asc"
+          type="radio"
+          value="ASC"
+          name="sortRadio"
+          onClick={ () => setSortOrder({ ...sortOrder, sort: 'ASC' }) }
+        />
+      </label>
+      <label htmlFor="sortRadioDesc">
+        Descendente
+        <input
+          id="sortRadioDesc"
+          data-testid="column-sort-input-desc"
+          type="radio"
+          value="DESC"
+          name="sortRadio"
+          onClick={ () => setSortOrder({ ...sortOrder, sort: 'DESC' }) }
+        />
+      </label>
+      <button
+        data-testid="column-sort-button"
+        type="button"
+        name="sortButton"
+        onClick={ () => sortPlanets() }
+      >
+        Ordenar
+      </button>
     </>
   );
 }
 
 export default Filters;
-
-/* Para renderizar a tabela de acordo com os filtros, fazer diretamente no array planets.
-Assim, a tabela sempre será renderizada a partir dos filtros, independente de tudo. Se houver
-filtro, renderiza baseado nele, se não houver, renderiza normal. Aplicar esse filtro no momento da renderização. */
-
-/* Acabei o dia percebendo que esse map-filter acima está errado. Primeiro pq teria que retornar
-  novo estado a cada passada nos itens do array de filterByNUmericalvalues. Segundo a primeira passada
-  usa como paramentro o array planets e as passadas seguintes teria que usar o novo estado como paramentro,
-  para compor o array a ser renderizado na Table.
-  Tem que achar uma maneira que:
-  1- Filtra o array de referencia "planets" baseado no primeiro filtro combinado (do array filterByNumericValues);
-  2- Armazena num estado 'X' e renderiza na Table o que sobrou do filtro;
-  3- Se houver de um filtro, faz a segunda filtrada, agora no estado "X" usando os paramentros do segundo filtro
-  4- Armazena no estado "X" e renderiza na Table.
-  5- Repete se houver outro filtro.
-
-  Os passos acima são feitos num só clique de deletar um filtro.
-  Se deletar outro filtro, o processo inteiro se repete, começando do array planets.
-
-  Possiveis soluções:
-  - Fazer alguma condicional para a segunda passada mudar do array planets para o do estado "X".
-  - Consertar o modo de uso dess filter-map, pq acho que não está alcançando a finalidade.
-  OBS: Na função acima, invetid os sinais > < ===  nos ifs, para pegar o contrário do que os filtros trazem */

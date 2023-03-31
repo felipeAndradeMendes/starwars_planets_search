@@ -9,7 +9,10 @@ function InputProvider({ children }) {
   const [valueFilter, setValueFilter] = useState(0);
   const [combinedFilters, setCombinedFilters] = useState([]);
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  // const [columnSort, setColumnSort] = useState([]);
+  const [sortOrder, setSortOrder] = useState({ column: 'population', sort: 'ASC' });
   // const [columnsToRender, setColumnsToRender] = useState([]);
+  const [sortedPlanetsToRender, setSortedPlanetsToRender] = useState([]);
 
   const context = {
     searchInput,
@@ -24,8 +27,12 @@ function InputProvider({ children }) {
     setCombinedFilters,
     filterByNumericValues,
     setFilterByNumericValues,
-    // columnsToRender,
-    // setColumnsToRender,
+    // columnSort,
+    // setColumnSort,
+    sortOrder,
+    setSortOrder,
+    sortedPlanetsToRender,
+    setSortedPlanetsToRender,
   };
 
   return (

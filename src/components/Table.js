@@ -8,6 +8,7 @@ function Table() {
   const { searchInput,
     combinedFilters,
     filterByNumericValues,
+    sortedPlanetsToRender,
   } = useContext(InputContext);
 
   console.log('COMBINED FILTERS:', combinedFilters);
@@ -30,7 +31,7 @@ function Table() {
   //   }
   // };
 
-  const resultado = () => {
+  const combinedFilteredPlanets = () => {
     const render = planets.filter((planet) => {
       let match = true;
       filterByNumericValues.forEach((filter) => {
@@ -74,7 +75,12 @@ function Table() {
   // console.log('RESULTADO!', resultado());
 
   const planetsToRender = () => {
-    if (searchInput === '') { return resultado(); }
+    if (sortedPlanetsToRender.length !== 0) {
+      return sortedPlanetsToRender;
+    }
+    if (searchInput === '') {
+      return combinedFilteredPlanets();
+    }
     if (searchInput !== '') { return filterSearchInput; }
   };
 
@@ -96,7 +102,7 @@ function Table() {
         {
           planetsToRender().map((planet) => (
             <tr key={ planet.name }>
-              <td>{planet.name}</td>
+              <td data-testid="planet-name">{planet.name}</td>
               <td>{planet.rotation_period}</td>
               <td>{planet.orbital_period}</td>
               <td>{planet.diameter}</td>
