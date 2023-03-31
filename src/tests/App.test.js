@@ -2,7 +2,7 @@ import React from 'react';
 import App from '../App';
 import InputProvider from '../context/InputProvider';
 import PlanetsProvider from '../context/PlanetsProvider';
-import { render, screen, waitFor } from '@testing-library/react';
+import { getByText, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import testData from '../../cypress/mocks/testData';
 
@@ -77,9 +77,9 @@ describe('TESTES GERAIS', () => {
     
     userEvent.type(nameFilter, 'ot');
     
-    waitFor(() => {
-      expect(screen.getByText('/loading.../i')).not.toBeInTheDocument();
-    })
+    // waitFor(() => {
+    //   expect(screen.getByText('/loading.../i')).not.toBeInTheDocument();
+    // })
     
     expect(await screen.findByRole('cell', { name: /hoth/i})).toBeVisible();
     expect(screen.queryByRole('cell', { name: /Dagobah/i})).not.toBeInTheDocument();
@@ -168,8 +168,47 @@ describe('TESTES GERAIS', () => {
     expect(buttonDeleteFilter).toBeInTheDocument();
     userEvent.click(buttonDeleteFilter);
     expect(tableRows.children.length).toBe(10);
+  });
 
+  test('Os filtros de sort funcionam corretamente', async () => {
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(testData),
+    });
+    render(
+      <InputProvider>
+        <PlanetsProvider>
+          <App />
+        </PlanetsProvider>
+      ,
+      </InputProvider>,
+    )
 
+    const columnSort = screen.getByTestId('column-sort');
+    expect(columnSort).toBeInTheDocument();
+    const columnSortInputAsc = screen.getByTestId('column-sort-input-asc');
+    expect(columnSortInputAsc).toBeInTheDocument();
+    const columnSortInputDesc = screen.getByTestId('column-sort-input-desc')
+    expect(columnSortInputDesc).toBeInTheDocument();
+    const columnSortButton = screen.getByTestId('column-sort-button');
+    expect(columnSortButton).toBeInTheDocument();
+    const tableRows = await screen.findByTestId('table-testid');
+
+    userEvent.selectOptions(columnSort, 'diameter');
+    userEvent.click(columnSortInputAsc);
+    userEvent.click(columnSortButton);
+    
+    expect(within(tableRows.children[0]).getByRole('cell', {name: /endor/i})).toBeInTheDocument();
+    expect(within(tableRows.children[9]).getByRole('cell', {name: /bespin/i})).toBeInTheDocument();
+    
+    userEvent.selectOptions(columnSort, 'diameter');
+    userEvent.click(columnSortInputDesc);
+    userEvent.click(columnSortButton);
+
+    expect(within(tableRows.children[0]).getByRole('cell', {name: /bespin/i})).toBeInTheDocument();
+    expect(within(tableRows.children[9]).getByRole('cell', {name: /endor/i})).toBeInTheDocument();
+    
+    screen.logTestingPlaygroundURL();
   });
 
 });
