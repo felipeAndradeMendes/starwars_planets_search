@@ -19,18 +19,6 @@ function Table() {
     .toLowerCase().includes(searchInput.toLowerCase()));
   console.log('FILTERED BY NAME:', filterSearchInput);
 
-  /* Se os filtros combinados estiverem vazios: se o input por vazio retorna a lista
-  completa de planetas, se estiver com algum termo, retorna a constante acima;
-  Se os filtros combinados estiverem preenchidos, retorna esse array. */
-  // const planetsToRender = () => {
-  //   if (combinedFilters.length === 0) {
-  //     if (searchInput === '') { return planets; }
-  //     if (searchInput !== '') { return filterSearchInput; }
-  //   } else {
-  //     return combinedFilters;
-  //   }
-  // };
-
   const combinedFilteredPlanets = () => {
     const render = planets.filter((planet) => {
       let match = true;
@@ -46,33 +34,12 @@ function Table() {
         default:
           match = match && value === Number(filter.value);
           break;
-        // default:
-        //   break;
         }
       });
       return match;
     });
     return render;
   };
-
-  // const resultado = () => {
-  //   const render = planets.filter((planet) => {
-  //     let isTrue = true;
-  //     filterByNumericValues.forEach((filter) => {
-  //       if (filter.comparison === 'maior que') {
-  //         isTrue = planet[filter.column] > Number(filter.value);
-  //       } if (filter.comparison === 'menor que') {
-  //         isTrue = planet[filter.column] < Number(filter.value);
-  //       } if (filter.comparison === 'igual a') {
-  //         isTrue = planet[filter.column] === filter.value;
-  //       }
-  //     });
-  //     return isTrue;
-  //   });
-  //   return render;
-  // };
-
-  // console.log('RESULTADO!', resultado());
 
   const planetsToRender = () => {
     if (sortedPlanetsToRender.length !== 0) {

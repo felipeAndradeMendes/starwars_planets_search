@@ -77,10 +77,6 @@ describe('TESTES GERAIS', () => {
     
     userEvent.type(nameFilter, 'ot');
     
-    // waitFor(() => {
-    //   expect(screen.getByText('/loading.../i')).not.toBeInTheDocument();
-    // })
-    
     expect(await screen.findByRole('cell', { name: /hoth/i})).toBeVisible();
     expect(screen.queryByRole('cell', { name: /Dagobah/i})).not.toBeInTheDocument();
   });

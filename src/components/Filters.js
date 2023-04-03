@@ -14,7 +14,6 @@ function Filters() {
     setValueFilter,
     setFilterByNumericValues,
     filterByNumericValues,
-    // sortedPlanetsToRender,
     setSortedPlanetsToRender,
     sortOrder,
     setSortOrder,
@@ -26,13 +25,10 @@ function Filters() {
   const columnsToBeRender = () => {
     // Retorna coluna usadas a partir dos objetos armazenados em filterByNumericValues;
     const columnsUsed = filterByNumericValues.map((filter) => filter.column);
-    console.log('COLUMN OPTIONS:', columnOptions);
-    console.log('COLUMNS USED:', columnsUsed);
     // Filtra colunas que não foram usadas para serem renderizadas nas options;
     const columnsToBeRendered = columnOptions.filter(
       (column) => !columnsUsed.includes(column),
     );
-    console.log('COLUMNS TO BE RENDERED:', columnsToBeRendered);
     return columnsToBeRendered;
   };
   /* Cria objeto com as opções escolhidas nos filtros comibnadas.
@@ -44,29 +40,18 @@ function Filters() {
       value: valueFilter,
     };
     setFilterByNumericValues([...filterByNumericValues, combinedFiltersObj]);
-    console.log('COLUMNS TO RENDER 02', columnsToBeRender());
     setColumnFilter(columnsToBeRender()[1]);
   };
 
   // função chamada pelo onclik FILTRAR
-  /* Botão filtrar chama a função, após options escolhidos.
-  Mapeia os planetas de acordo com as escolhas de busca */
   const filterCombinedSelectors = () => {
     constroyAndSetCombinedFiltersObj();
   };
 
   const deleteSingleFilter = (value) => {
-    // Resgata obj do filtro deletado;
-    const filterToBeDeleted = filterByNumericValues
-      .filter((item) => item.column === value);
-
     // Filtra novo array sem o filtro deletado e atualiza estado;
     const filteredArray = filterByNumericValues.filter((item) => item.column !== value);
     setFilterByNumericValues(filteredArray);
-    // resetCombinedFilters(filterToBeDeleted);
-
-    console.log('VALUE:', filterToBeDeleted);
-    // console.log('FILTER BY NUMERICAL VALUES:', filterByNumericValues);
   };
 
   const removeFilters = () => {
